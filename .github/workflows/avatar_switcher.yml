@@ -10,4 +10,25 @@ on:
   workflow_dispatch:
 
 jobs:
-  ...
+  switch-avatar:
+    name: Switch Slack Avatar & Status
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install slack-sdk python-dotenv
+
+      - name: Run avatar switcher
+        env:
+          SLACK_USER_TOKEN: ${{ secrets.SLACK_USER_TOKEN }}
+        run: python avatar_switcher.py
